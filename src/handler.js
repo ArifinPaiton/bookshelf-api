@@ -8,10 +8,7 @@ const handlerTambahBuku = (request, h) => {
   } = request.payload;
 
   const id = nanoid(16);
-  const finished = false;
-  if (pageCount === readPage) {
-    finished = true;
-  }
+  const finished = pageCount === readPage;
 
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
@@ -29,7 +26,7 @@ const handlerTambahBuku = (request, h) => {
     return response;
   }
 
-  if (readPage > pageCount) {
+  if (bukuBaru.readPage > bukuBaru.pageCount) {
     const response = h.response({
       status: 'fail',
       message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
@@ -64,6 +61,30 @@ const handlerTambahBuku = (request, h) => {
 
 // handler untuk menampilkan semua buku
 const handlerTampilSemuaBuku = (request, h) => {
+  const { name, reading } = request.query;
+  
+  // untuk menampilkan data buku sesuai nama
+  const bookName = books.filter((book) => book.name.includes(name));
+  if (bookName != undefined) {
+    const response = h.response({
+      status: 'success',
+      data: {
+        books: bookName.map((n) => ({
+          id: n.id,
+          name: n.name,
+          publisher: n.publisher,
+        })),
+      },
+    });
+    response.code(200);
+    return response;
+  }
+
+  // untuk menampilkan data buku yg sedang dibaca
+  // if (reading > 0) {
+  //   return reading;
+  // }
+
   if (books.length > 0) {
     const response = h.response({
       status: 'success',
@@ -73,12 +94,14 @@ const handlerTampilSemuaBuku = (request, h) => {
           id: book.id,
           name: book.name,
           publisher: book.publisher,
+          reading: book.reading,
         })),
       },
     });
     response.code(200);
     return response;
   }
+
   const response = h.response({
     status: 'success',
     data: {
@@ -153,7 +176,7 @@ const handlerUbahBuku = (request, h) => {
         books: books.map((book) => ({
           name: book.name,
         })),
-      }
+      },
     });
     response.code(200);
     return response;
@@ -166,6 +189,29 @@ const handlerUbahBuku = (request, h) => {
   return response;
 };
 
+// handler untuk menghapus data buku
+const handlerHapusBuku = (request, h) => {
+  const { bookId } = request.params;
+  const index = books.findIndex((book) => book.id === bookId);
+
+  if (index !== -1) {
+    books.splice(index, 1);
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil dihapus',
+    });
+    response.code(200);
+    return response;
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan',
+  });
+  response.code(404);
+  return response;
+};
+
 module.exports = {
-  handlerTambahBuku, handlerTampilSemuaBuku, handlerTampilBukuSesuaiId, handlerUbahBuku,
+  handlerTambahBuku, handlerTampilSemuaBuku, handlerTampilBukuSesuaiId, handlerUbahBuku, handlerHapusBuku,
 };

@@ -1,4 +1,4 @@
-const { handlerTambahBuku, handlerTampilSemuaBuku, handlerTampilBukuSesuaiId, handlerUbahBuku } = require('./handler');
+const { handlerTambahBuku, handlerTampilSemuaBuku, handlerTampilBukuSesuaiId, handlerUbahBuku, handlerHapusBuku } = require('./handler');
 
 const routes = [
   // untuk menambah buku
@@ -25,6 +25,18 @@ const routes = [
     path: '/books/{bookId}',
     handler: handlerUbahBuku,
   },
+  // untuk menghapus data buku
+  {
+    method: 'DELETE',
+    path: '/books/{bookId}',
+    handler: handlerHapusBuku,
+  },
+  // untuk meampilkan buku sesuai pencarian
+  // {
+  //   method: 'GET',
+  //   path: '/books',
+  //   handler: handlerTampilBukuSesuaiPencarian,
+  // }
 ];
 
 module.exports = routes;
