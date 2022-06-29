@@ -61,40 +61,39 @@ const handlerTambahBuku = (request, h) => {
 
 // handler untuk menampilkan semua buku
 const handlerTampilSemuaBuku = (request, h) => {
-  const { name, reading } = request.query;
-  
-  // untuk menampilkan data buku sesuai nama
-  const bookName = books.filter((book) => book.name.includes(name));
-  if (bookName != undefined) {
-    const response = h.response({
-      status: 'success',
-      data: {
-        books: bookName.map((n) => ({
-          id: n.id,
-          name: n.name,
-          publisher: n.publisher,
-        })),
-      },
-    });
-    response.code(200);
-    return response;
-  }
+  const { name, reading, finished } = request.query;
+  let buku = books;
 
-  // untuk menampilkan data buku yg sedang dibaca
-  // if (reading > 0) {
-  //   return reading;
-  // }
+  if (buku.length > 0) {
+    // untuk menampilkan data buku sesuai nama
+    if (name !== undefined) {
+      buku = buku.filter((b) => b.name.toLowerCase().includes(name.toLowerCase()));
+    }
+    // untuk menampilkan buku yg sedang reading
+    if (reading === '1') {
+      buku = buku.filter((b) => b.reading === true);
+    }
+    // untuk menampilkan buku yg tidak reading
+    if (reading === '0') {
+      buku = buku.filter((b) => b.reading === false);
+    }
+    // untuk menampilkan buku yg sudah finished
+    if (finished === '1') {
+      buku = buku.filter((b) => b.finished === true);
+    }
+    // untuk menampilkan buku yg belum finished
+    if (finished === '0') {
+      buku = buku.filter((b) => b.finished === false);
+    }
 
-  if (books.length > 0) {
     const response = h.response({
       status: 'success',
       data: {
         // kode untuk mengambil sebagian data
-        books: books.map((book) => ({
-          id: book.id,
-          name: book.name,
-          publisher: book.publisher,
-          reading: book.reading,
+        books: buku.map((b) => ({
+          id: b.id,
+          name: b.name,
+          publisher: b.publisher,
         })),
       },
     });
