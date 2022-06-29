@@ -70,19 +70,19 @@ const handlerTampilSemuaBuku = (request, h) => {
       buku = buku.filter((b) => b.name.toLowerCase().includes(name.toLowerCase()));
     }
     // untuk menampilkan buku yg sedang reading
-    if (reading === '1') {
+    if (reading == 1 ){
       buku = buku.filter((b) => b.reading === true);
     }
     // untuk menampilkan buku yg tidak reading
-    if (reading === '0') {
+    if (reading == 0) {
       buku = buku.filter((b) => b.reading === false);
     }
     // untuk menampilkan buku yg sudah finished
-    if (finished === '1') {
+    if (finished == 1) {
       buku = buku.filter((b) => b.finished === true);
     }
     // untuk menampilkan buku yg belum finished
-    if (finished === '0') {
+    if (finished == 0) {
       buku = buku.filter((b) => b.finished === false);
     }
 
