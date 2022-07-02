@@ -1,4 +1,10 @@
-const { handlerTambahBuku, handlerTampilSemuaBuku, handlerTampilBukuSesuaiId, handlerUbahBuku, handlerHapusBuku } = require('./handler');
+const {
+  handlerTambahBuku,
+  handlerTampilSemuaBuku,
+  handlerTampilBukuSesuaiId,
+  handlerUbahBuku,
+  handlerHapusBuku,
+} = require('./handler');
 
 const routes = [
   // untuk menambah buku

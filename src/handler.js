@@ -2,9 +2,16 @@ const { nanoid } = require('nanoid');
 const books = require('./books');
 
 // handler tambah buku
-const handlerTambahBuku = (request, h) => {
+function handlerTambahBuku(request, h) {
   const {
-    name, year, author, summary, publisher, pageCount, readPage, reading,
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
   } = request.payload;
 
   const id = nanoid(16);
@@ -14,7 +21,18 @@ const handlerTambahBuku = (request, h) => {
   const updatedAt = insertedAt;
 
   const bukuBaru = {
-    id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt,
+    id,
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    finished,
+    reading,
+    insertedAt,
+    updatedAt,
   };
 
   if (!bukuBaru.name) {
@@ -57,7 +75,7 @@ const handlerTambahBuku = (request, h) => {
   });
   response.code(500);
   return response;
-};
+}
 
 // handler untuk menampilkan semua buku
 const handlerTampilSemuaBuku = (request, h) => {
@@ -70,19 +88,19 @@ const handlerTampilSemuaBuku = (request, h) => {
       buku = buku.filter((b) => b.name.toLowerCase().includes(name.toLowerCase()));
     }
     // untuk menampilkan buku yg sedang reading
-    if (reading == 1 ){
+    if (reading === '1') {
       buku = buku.filter((b) => b.reading === true);
     }
     // untuk menampilkan buku yg tidak reading
-    if (reading == 0) {
+    if (reading === 0) {
       buku = buku.filter((b) => b.reading === false);
     }
     // untuk menampilkan buku yg sudah finished
-    if (finished == 1) {
+    if (finished === 1) {
       buku = buku.filter((b) => b.finished === true);
     }
     // untuk menampilkan buku yg belum finished
-    if (finished == 0) {
+    if (finished === 0) {
       buku = buku.filter((b) => b.finished === false);
     }
 
@@ -165,7 +183,16 @@ const handlerUbahBuku = (request, h) => {
 
   if (index !== -1) {
     books[index] = {
-      ...books[index], name, year, author, summary, publisher, pageCount, readPage, reading, updatedAt,
+      ...books[index],
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
+      updatedAt,
     };
 
     const response = h.response({
@@ -212,5 +239,9 @@ const handlerHapusBuku = (request, h) => {
 };
 
 module.exports = {
-  handlerTambahBuku, handlerTampilSemuaBuku, handlerTampilBukuSesuaiId, handlerUbahBuku, handlerHapusBuku,
+  handlerTambahBuku,
+  handlerTampilSemuaBuku,
+  handlerTampilBukuSesuaiId,
+  handlerUbahBuku,
+  handlerHapusBuku,
 };
